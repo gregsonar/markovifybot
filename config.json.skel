@@ -3,7 +3,6 @@
         "user_agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0"
     },
     "telegram": {
-        "token": "",
-        "rate_limit_exempt_chat_ids": [6994771]
+        "token": ""
     }
 }

@@ -49,20 +49,6 @@ class TelegramBot(telepot.aio.Bot):
                 await self.send_message(message, _msg, no_preview=True)
                 return
 
-            # check rate limit
-            if chat_id not in config['telegram']['rate_limit_exempt_chat_ids']:
-                rate_limit = utils.rate_limit.hit('telegram', chat_id)
-                if not rate_limit['allowed']:
-                    _msg = (('Message from {longname}: throttled ' +
-                            '(resets in {reset} seconds)')
-                            .format(longname=longname,
-                                    reset=rate_limit['reset']))
-                    utils.logging.warn(_msg)
-                    _msg = (('Not so fast! Try again in {}.')
-                            .format(utils.timedelta(rate_limit['reset'])))
-                    await self.send_message(message, _msg)
-                    return
-
             text = message['text'].strip().strip('\n')
             try:
                 m = Markoviser.from_text(text)
