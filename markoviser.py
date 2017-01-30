@@ -10,10 +10,10 @@ from config import config
 
 RUBBISH_HTML = {'style', 'script', '[document]', 'head', 'title'}
 USEFUL_HTML = {'p'}
-MIN_PARAGRAPHS = 1
-MAX_PARAGRAPHS = 3
+MIN_PARAGRAPHS = 4
+MAX_PARAGRAPHS = 8
 MIN_SENTENCES = 2
-MAX_SENTENCES = 5
+MAX_SENTENCES = 6
 
 class HTTPRequestErrorException(Exception):
     pass
