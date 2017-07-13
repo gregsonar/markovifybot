@@ -21,7 +21,7 @@ class Logger(object):
 logger = Logger().get_logger()
 
 
-def ellipsis(text, max_length):
+def do_ellipsis(text, max_length):
     if len(text) > max_length:
         return text[:max_length - 1] + '…'
     else:
