@@ -1,5 +1,4 @@
 import asyncio
-
 import telepot
 import telepot.aio
 
@@ -31,12 +30,11 @@ class TelegramBot(telepot.aio.Bot):
             if content_type != 'text':
                 return
 
-            name = self.format_name(message)
+            name = self.format_name(self, message)
             longname = '{chat_id} ({name})'.format(chat_id=chat_id,
                                                    name=name)
-            utils.logging.info(('Message from {longname}: "{message_text}"')
-                               .format(longname=longname,
-                                       message_text=message['text']))
+            utils.logging.info('Message from {longname}: "{message_text}"'.format(longname=longname,
+                                                                                   message_text=message['text']))
 
             if message['text'].startswith('/'):
                 command = message['text'].split(' ')[0][1:]
@@ -62,24 +60,31 @@ class TelegramBot(telepot.aio.Bot):
 
             await self.send_message(message, result)
         except Exception as e:
-            utils.logging.exception('Error handling {longname} ({type})'
+            if 'longname' not in locals():
+                longname = 'longname_not_defined'
+            elif 'longname' not in globals():
+                longname = 'longname_not_defined'
+
+            utils.logging.exception('Error handling {longname} ({type}). Error message: {error}'
                                     .format(longname=longname,
-                                            type=message['chat']['type']))
+                                            type=message['chat']['type'],
+                                            error=e))
             await self.send_message(message, 'Sorry, try again.')
 
     async def send_message(self, message, caption, filename=None,
                            no_preview=False):
         if filename:
-            caption = utils.ellipsis(caption, 200)
+            caption = utils.do_ellipsis(caption, 200)
             with open(filename, 'rb') as f:
                 await self.sendPhoto(message['chat']['id'],
                                      f, caption=caption)
         else:
-            caption = utils.ellipsis(caption, 4096)
+            caption = utils.do_ellipsis(caption, 4096)
             await self.sendMessage(message['chat']['id'],
                                    caption,
                                    disable_web_page_preview=no_preview)
 
+    @staticmethod
     def format_name(self, message):
         longname = []
         if 'username' in message['from']:

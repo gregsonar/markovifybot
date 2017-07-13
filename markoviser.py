@@ -15,11 +15,14 @@ MAX_PARAGRAPHS = 8
 MIN_SENTENCES = 2
 MAX_SENTENCES = 6
 
+
 class HTTPRequestErrorException(Exception):
     pass
 
+
 class MarkovGeneratorErrorException(Exception):
     pass
+
 
 rx_multiline = re.compile('\n+')
 rx_multispace = re.compile(' +')
@@ -58,6 +61,7 @@ class Markoviser(object):
         # take everything that's gud
         return [s.text for s in soup(USEFUL_HTML)]
 
+    @staticmethod
     def clean_corpus(self, corpus):
         corpus = corpus.replace('\r', '\n')
         corpus = rx_multiline.sub('\n', corpus)
